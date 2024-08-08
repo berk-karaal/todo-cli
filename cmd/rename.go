@@ -2,8 +2,10 @@ package cmd
 
 import (
 	"fmt"
-
+	"github.com/berk-karaal/todo-cli/internal/database"
+	"github.com/berk-karaal/todo-cli/internal/repository"
 	"github.com/spf13/cobra"
+	"strconv"
 )
 
 // renameCmd represents the rename command
@@ -19,6 +21,25 @@ func init() {
 }
 
 func commandRename(cmd *cobra.Command, args []string) error {
-	fmt.Println("rename called")
+	db, err := database.NewDB()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	todoId, err := strconv.Atoi(args[0])
+	if err != nil {
+		return fmt.Errorf("TODO_ID argument must be an integer")
+	}
+
+	newName := args[1]
+
+	todoRepo := repository.TodoRepository{DB: db}
+	effectedRowCount, err := todoRepo.UpdateTodoName(todoId, newName)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("Updated %d todo\n", effectedRowCount)
 	return nil
 }
