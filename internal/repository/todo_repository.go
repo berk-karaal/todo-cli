@@ -13,16 +13,16 @@ type TodoRepository struct {
 type Todo struct {
 	Id        int
 	Name      string
-	Status    string
+	Status    TodoStatus
 	CreatedAt time.Time
 }
 
 type TodoStatus string
 
 const (
-	TODO_STATUS_NOT_STARTED = "N"
-	TODO_STATUS_IN_PROGRESS = "IP"
-	TODO_STATUS_DONE        = "D"
+	TODO_STATUS_NOT_STARTED TodoStatus = "N"
+	TODO_STATUS_IN_PROGRESS TodoStatus = "IP"
+	TODO_STATUS_DONE        TodoStatus = "D"
 )
 
 func NewTodoRepository(db *sql.DB) TodoRepository {
@@ -83,7 +83,7 @@ func (r *TodoRepository) ListTodosByCreatedAt(min, max time.Time) ([]Todo, error
 		todos = append(todos, Todo{
 			Id:        id,
 			Name:      name,
-			Status:    status,
+			Status:    TodoStatus(status),
 			CreatedAt: time.Unix(int64(createdAt), 0),
 		})
 	}
@@ -92,4 +92,18 @@ func (r *TodoRepository) ListTodosByCreatedAt(min, max time.Time) ([]Todo, error
 	}
 
 	return todos, nil
+}
+
+func (r *TodoRepository) UpdateTodoStatus(todoId int, status TodoStatus) (int, error) {
+	result, err := r.DB.Exec("UPDATE todos SET status = ? WHERE id = ?;", status, todoId)
+	if err != nil {
+		return 0, err
+	}
+
+	effectedRows, err := result.RowsAffected()
+	if err != nil {
+		return 0, err
+	}
+
+	return int(effectedRows), nil
 }
