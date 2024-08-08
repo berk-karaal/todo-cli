@@ -13,6 +13,14 @@ func NewDB() (*sql.DB, error) {
 	return db, nil
 }
 
+func DropTables(db *sql.DB) error {
+	_, err := db.Exec("DROP TABLE IF EXISTS todos;")
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func SetupTodoDatabase(db *sql.DB) error {
 
 	// status column choices are N: Not started, IP: In progress, D: Done
