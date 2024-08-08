@@ -107,3 +107,17 @@ func (r *TodoRepository) UpdateTodoStatus(todoId int, status TodoStatus) (int, e
 
 	return int(effectedRows), nil
 }
+
+func (r *TodoRepository) UpdateTodoName(todoId int, name string) (int, error) {
+	result, err := r.DB.Exec("UPDATE todos SET name = ? WHERE id = ?;", name, todoId)
+	if err != nil {
+		return 0, err
+	}
+
+	effectedRows, err := result.RowsAffected()
+	if err != nil {
+		return 0, err
+	}
+
+	return int(effectedRows), nil
+}
