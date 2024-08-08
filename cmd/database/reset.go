@@ -1,7 +1,7 @@
 package database
 
 import (
-	"fmt"
+	"github.com/berk-karaal/todo-cli/internal/database"
 	"github.com/spf13/cobra"
 )
 
@@ -16,6 +16,19 @@ func init() {
 }
 
 func commandReset(cmd *cobra.Command, args []string) error {
-	fmt.Println("reset called")
+	db, err := database.NewDB()
+	if err != nil {
+		return err
+	}
+
+	err = database.DropTables(db)
+	if err != nil {
+		return err
+	}
+
+	err = database.SetupTodoDatabase(db)
+	if err != nil {
+		return err
+	}
 	return nil
 }
