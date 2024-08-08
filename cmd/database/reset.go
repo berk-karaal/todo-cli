@@ -26,7 +26,7 @@ func commandReset(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	err = database.SetupTodoDatabase(db)
+	err = database.CreateTables(db)
 	if err != nil {
 		return err
 	}

@@ -21,7 +21,7 @@ func DropTables(db *sql.DB) error {
 	return nil
 }
 
-func SetupTodoDatabase(db *sql.DB) error {
+func CreateTables(db *sql.DB) error {
 
 	// status column choices are N: Not started, IP: In progress, D: Done
 	// createdAt column is unix timestamp
