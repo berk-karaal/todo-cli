@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/berk-karaal/todo-cli/internal/database"
+	"github.com/berk-karaal/todo-cli/internal/formatter"
 	"github.com/berk-karaal/todo-cli/internal/repository"
 	"time"
 
@@ -47,7 +48,7 @@ func commandList(cmd *cobra.Command, args []string) error {
 	}
 
 	for _, todo := range todos {
-		fmt.Println(todo)
+		fmt.Println(formatter.TodoFormatter(todo))
 	}
 
 	return nil
