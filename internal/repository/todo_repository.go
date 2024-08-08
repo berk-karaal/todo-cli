@@ -121,3 +121,17 @@ func (r *TodoRepository) UpdateTodoName(todoId int, name string) (int, error) {
 
 	return int(effectedRows), nil
 }
+
+func (r *TodoRepository) DeleteTodoById(todoId int) (int, error) {
+	result, err := r.DB.Exec("DELETE FROM todos WHERE id = ?;", todoId)
+	if err != nil {
+		return 0, err
+	}
+
+	effectedRows, err := result.RowsAffected()
+	if err != nil {
+		return 0, err
+	}
+
+	return int(effectedRows), nil
+}
