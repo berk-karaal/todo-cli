@@ -2,11 +2,11 @@ package cmd
 
 import (
 	"fmt"
-
+	"github.com/berk-karaal/todo-cli/internal/database"
+	"github.com/berk-karaal/todo-cli/internal/repository"
 	"github.com/spf13/cobra"
 )
 
-// newCmd represents the new command
 var newCmd = &cobra.Command{
 	Use:   "new TODO_TEXT",
 	Short: "Create a new todo",
@@ -20,6 +20,17 @@ func init() {
 }
 
 func commandNew(cmd *cobra.Command, args []string) error {
-	fmt.Println("Creating new todo with name " + args[0])
+	db, err := database.NewDB()
+	if err != nil {
+		return err
+	}
+
+	todoRepo := repository.NewTodoRepository(db)
+	todo, err := todoRepo.CreateTodo(args[0])
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("Added '%s'\n", todo.Name)
 	return nil
 }
