@@ -1,4 +1,4 @@
-package cmd
+package database
 
 import (
 	"fmt"
@@ -15,7 +15,7 @@ var exportCmd = &cobra.Command{
 }
 
 func init() {
-	RootCmd.AddCommand(exportCmd)
+	databaseCmd.AddCommand(exportCmd)
 
 	exportCmd.Flags().String("format", "json", "Export format. Available formats are: json, csv")
 }
