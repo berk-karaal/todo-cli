@@ -51,6 +51,41 @@ func (r *TodoRepository) CreateTodo(name string) (Todo, error) {
 	}, nil
 }
 
+// ListAllTodos returns all Todo objects from database.
+func (r *TodoRepository) ListAllTodos() ([]Todo, error) {
+	rows, err := r.DB.Query("SELECT id, name, status, createdAt FROM todos ORDER BY createdAt DESC;")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var todos []Todo
+	for rows.Next() {
+		var (
+			id        int
+			name      string
+			status    string
+			createdAt int
+		)
+		err := rows.Scan(&id, &name, &status, &createdAt)
+		if err != nil {
+			return nil, err
+		}
+
+		todos = append(todos, Todo{
+			Id:        id,
+			Name:      name,
+			Status:    TodoStatus(status),
+			CreatedAt: time.Unix(int64(createdAt), 0),
+		})
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return todos, nil
+}
+
 // ListTodosByCreatedAt returns Todos from database. Given `min` and `max` parameters are used to filter Todos
 // by their creation time.
 func (r *TodoRepository) ListTodosByCreatedAt(min, max time.Time) ([]Todo, error) {
