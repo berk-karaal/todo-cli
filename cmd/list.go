@@ -39,9 +39,11 @@ func commandList(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	now := time.Now().AddDate(0, 0, -dayFlag)
-	today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.Local)
-	minTime := today.AddDate(0, 0, -dayFlag)
+	now := time.Now()
+	minTime := time.Date(
+		now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.Local,
+	).AddDate(0, 0, -dayFlag)
+
 	todos, err := todoRepo.ListTodosByCreatedAt(minTime, minTime.AddDate(0, 0, 1))
 	if err != nil {
 		return err
