@@ -46,12 +46,12 @@ func initViper() error {
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(configDir)
+	viper.SetDefault("database.location", "./todo.sqlite")
+
 	if err := viper.ReadInConfig(); err != nil {
 		var configFileNotFoundError viper.ConfigFileNotFoundError
 		if errors.As(err, &configFileNotFoundError) {
 			// create a new config file with default settings
-			viper.SetDefault("database.location", "./todo.sqlite")
-
 			err = viper.WriteConfigAs(path.Join(configDir, "config.yaml"))
 			if err != nil {
 				return fmt.Errorf("unable to write config file: %w", err)

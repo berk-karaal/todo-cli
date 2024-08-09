@@ -4,19 +4,10 @@ import (
 	"database/sql"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/spf13/viper"
-	"log"
 )
 
 func DBLocation() string {
 	dbLocation := viper.GetString("database.location")
-	if dbLocation == "" {
-		viper.Set("database.location", "./todo.sqlite")
-		err := viper.WriteConfig()
-		if err != nil {
-			log.Fatal("Writing database location to config file failed.")
-		}
-		return viper.GetString("database.location")
-	}
 	return dbLocation
 }
 
