@@ -7,7 +7,7 @@ A cli todo application designed for daily todos.
 ## Install
 
 ```
-$ go install github.com/berk-karaal/todo-cli
+$ go install github.com/berk-karaal/todo-cli@latest
 ```
 
 This will add `todo-cli` binary to your GOBIN directory, renaming this binary to
