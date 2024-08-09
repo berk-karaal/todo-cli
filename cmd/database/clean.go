@@ -1,4 +1,4 @@
-package cmd
+package database
 
 import (
 	"fmt"
@@ -17,7 +17,7 @@ var cleanCmd = &cobra.Command{
 }
 
 func init() {
-	RootCmd.AddCommand(cleanCmd)
+	databaseCmd.AddCommand(cleanCmd)
 
 	cleanCmd.Flags().IntP("day", "d", 30,
 		"Day limit for task to be cleaned if they are created before than the given days ago.")
