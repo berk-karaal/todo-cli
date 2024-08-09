@@ -27,6 +27,7 @@ func DropTables(db *sql.DB) error {
 	return nil
 }
 
+// CreateTables create necessary database tables if not exists
 func CreateTables(db *sql.DB) error {
 
 	// status column choices are N: Not started, IP: In progress, D: Done
