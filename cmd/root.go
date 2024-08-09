@@ -3,6 +3,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"github.com/adrg/xdg"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"os"
@@ -43,10 +44,16 @@ func initViper() error {
 		return err
 	}
 
+	dataDir := path.Join(xdg.DataHome, "todo-cli")
+	err = os.MkdirAll(dataDir, 0766)
+	if err != nil {
+		return err
+	}
+
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(configDir)
-	viper.SetDefault("database.location", "./todo.sqlite")
+	viper.SetDefault("database.location", path.Join(dataDir, "todo.sqlite"))
 
 	if err := viper.ReadInConfig(); err != nil {
 		var configFileNotFoundError viper.ConfigFileNotFoundError
