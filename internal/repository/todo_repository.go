@@ -170,3 +170,17 @@ func (r *TodoRepository) DeleteTodoById(todoId int) (int, error) {
 
 	return int(effectedRows), nil
 }
+
+func (r *TodoRepository) DeleteTodoByCreatedAtSmallerThan(createdAt time.Time) (int, error) {
+	result, err := r.DB.Exec("DELETE FROM todos WHERE createdAt < ?", createdAt.Unix())
+	if err != nil {
+		return 0, err
+	}
+
+	effectedRows, err := result.RowsAffected()
+	if err != nil {
+		return 0, err
+	}
+
+	return int(effectedRows), nil
+}
