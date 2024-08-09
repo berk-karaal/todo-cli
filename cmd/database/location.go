@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+	"github.com/berk-karaal/todo-cli/internal/database"
 	"github.com/spf13/cobra"
 )
 
@@ -16,6 +17,6 @@ func init() {
 }
 
 func commandLocation(cmd *cobra.Command, args []string) error {
-	fmt.Println("/path/of/data.sqlite")
+	fmt.Println(database.DBLocation())
 	return nil
 }
