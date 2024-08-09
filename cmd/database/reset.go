@@ -20,6 +20,7 @@ func commandReset(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
+	defer db.Close()
 
 	err = database.DropTables(db)
 	if err != nil {

@@ -25,6 +25,7 @@ func commandExport(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
+	defer db.Close()
 
 	todoRepo := repository.NewTodoRepository(db)
 	todos, err := todoRepo.ListAllTodos()

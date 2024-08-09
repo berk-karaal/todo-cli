@@ -32,6 +32,7 @@ func commandList(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
+	defer db.Close()
 	todoRepo := repository.NewTodoRepository(db)
 
 	dayFlag, err := cmd.Flags().GetInt("day")

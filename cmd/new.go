@@ -24,6 +24,7 @@ func commandNew(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
+	defer db.Close()
 
 	todoRepo := repository.NewTodoRepository(db)
 	todo, err := todoRepo.CreateTodo(args[0])
