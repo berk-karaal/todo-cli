@@ -15,7 +15,7 @@ var RootCmd = &cobra.Command{
 	Use:   "todo",
 	Short: "Simple todo cli app for daily tasks",
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-		return initViper()
+		return setup()
 	},
 }
 
@@ -28,23 +28,22 @@ func Execute() {
 	}
 }
 
-func init() {
-}
-
-func initViper() error {
+// setup function makes necessary setup operations for app to run.
+func setup() error {
 	userConfigDir, err := os.UserConfigDir()
 	if err != nil {
 		return err
 	}
-
 	configDir := path.Join(userConfigDir, "todo-cli")
+	dataDir := path.Join(xdg.DataHome, "todo-cli")
 
+	// Create parent directories of config file if not exist
 	err = os.MkdirAll(configDir, 0766)
 	if err != nil {
 		return err
 	}
 
-	dataDir := path.Join(xdg.DataHome, "todo-cli")
+	// Create  data directory and its parent directories if not exists
 	err = os.MkdirAll(dataDir, 0766)
 	if err != nil {
 		return err
