@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/adrg/xdg"
+	"github.com/berk-karaal/todo-cli/internal/database"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"os"
@@ -64,5 +65,17 @@ func setup() error {
 			}
 		}
 	}
+
+	// Make sure database tables are created
+	db, err := database.NewDB()
+	if err != nil {
+		return err
+	}
+	err = database.CreateTables(db)
+	if err != nil {
+		return err
+	}
+	db.Close()
+
 	return nil
 }
