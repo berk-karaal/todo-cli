@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"os"
-	"path"
+	"path/filepath"
 )
 
 // RootCmd represents the base command when called without any subcommands
@@ -35,8 +35,8 @@ func setup() error {
 	if err != nil {
 		return err
 	}
-	configDir := path.Join(userConfigDir, "todo-cli")
-	dataDir := path.Join(xdg.DataHome, "todo-cli")
+	configDir := filepath.Join(userConfigDir, "todo-cli")
+	dataDir := filepath.Join(xdg.DataHome, "todo-cli")
 
 	// Create parent directories of config file if not exist
 	err = os.MkdirAll(configDir, 0766)
@@ -53,13 +53,13 @@ func setup() error {
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(configDir)
-	viper.SetDefault("database.location", path.Join(dataDir, "todo.sqlite"))
+	viper.SetDefault("database.location", filepath.Join(dataDir, "todo.sqlite"))
 
 	if err := viper.ReadInConfig(); err != nil {
 		var configFileNotFoundError viper.ConfigFileNotFoundError
 		if errors.As(err, &configFileNotFoundError) {
 			// create a new config file with default settings
-			err = viper.WriteConfigAs(path.Join(configDir, "config.yaml"))
+			err = viper.WriteConfigAs(filepath.Join(configDir, "config.yaml"))
 			if err != nil {
 				return fmt.Errorf("unable to write config file: %w", err)
 			}
